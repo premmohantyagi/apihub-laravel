@@ -5,8 +5,8 @@
 [![License](https://img.shields.io/packagist/l/premmohantyagi/apihub-laravel.svg)](LICENSE)
 
 **ApiHub** is a unified integration package for Laravel. It gives you one clean,
-consistent, driver-based interface over global third-party APIs — **Payments,
-AI, Email, and SMS & Messaging** — so you can swap providers with a config
+consistent, driver-based interface over global third-party APIs (**Payments,
+AI, Email, and SMS & Messaging**) so you can swap providers with a config
 change instead of a rewrite.
 
 Every driver is built on Laravel's HTTP client (no heavy vendor SDKs), so the
@@ -28,13 +28,13 @@ logs, and webhook signature verification.
   - [Error handling](#error-handling)
   - [Testing with fakes](#testing-with-fakes)
 - [Email](#email)
-  - [Mailgun](#mailgun) · [SendGrid](#sendgrid) · [Amazon SES](#amazon-ses) · [Resend](#resend)
+  - [Mailgun](#mailgun) | [SendGrid](#sendgrid) | [Amazon SES](#amazon-ses) | [Resend](#resend)
 - [AI](#ai)
-  - [OpenAI](#openai) · [Anthropic](#anthropic) · [Google Gemini](#google-gemini) · [DeepSeek](#deepseek)
+  - [OpenAI](#openai) | [Anthropic](#anthropic) | [Google Gemini](#google-gemini) | [DeepSeek](#deepseek)
 - [SMS & Messaging](#sms--messaging)
-  - [Twilio](#twilio) · [Vonage](#vonage) · [MSG91](#msg91) · [Telegram](#telegram) · [WhatsApp](#whatsapp) · [Slack](#slack) · [Discord](#discord)
+  - [Twilio](#twilio) | [Vonage](#vonage) | [MSG91](#msg91) | [Telegram](#telegram) | [WhatsApp](#whatsapp) | [Slack](#slack) | [Discord](#discord)
 - [Payments](#payments)
-  - [Stripe](#stripe) · [Razorpay](#razorpay) · [PayPal](#paypal) · [Square](#square) · [Authorize.Net](#authorizenet)
+  - [Stripe](#stripe) | [Razorpay](#razorpay) | [PayPal](#paypal) | [Square](#square) | [Authorize.Net](#authorizenet)
   - [Verifying webhooks](#verifying-webhooks)
 - [Environment variables reference](#environment-variables-reference)
 - [Development](#development)
@@ -46,7 +46,7 @@ logs, and webhook signature verification.
 ## Why ApiHub
 
 - **One interface per category.** Swap Stripe for Razorpay, or OpenAI for
-  Anthropic, by changing a config value — not your code.
+  Anthropic, by changing a config value, not your code.
 - **No SDK bloat.** Drivers talk raw REST over `illuminate/http`. Official SDKs
   are optional, never required.
 - **Production-grade core.** Retries, timeouts, mapped exceptions, redacted
@@ -60,7 +60,7 @@ logs, and webhook signature verification.
 
 ## Requirements
 
-- PHP **8.0 – 8.4**
+- PHP **8.0 to 8.4**
 - Laravel **8, 9, 10, 11, 12, or 13**
 
 ---
@@ -74,7 +74,7 @@ composer require premmohantyagi/apihub-laravel
 ```
 
 The service provider and the `Payments`, `Ai`, `Email`, and `Sms` facades are
-auto-discovered — no manual registration needed.
+auto-discovered, so no manual registration is needed.
 
 Publish the config file:
 
@@ -103,7 +103,7 @@ return [
 
     'logging' => [
         'enabled'     => env('APIHUB_LOGGING', false), // logs each call at debug level
-        'redact_keys' => ['password', 'secret', 'token', 'api_key', /* … */],
+        'redact_keys' => ['password', 'secret', 'token', 'api_key', /* ... */],
     ],
 
     'queue' => [
@@ -111,10 +111,10 @@ return [
         'name'       => env('APIHUB_QUEUE_NAME', 'default'),
     ],
 
-    'payments'  => ['default' => env('APIHUB_PAYMENTS_DRIVER', 'stripe'),   'drivers' => [/* … */]],
-    'ai'        => ['default' => env('APIHUB_AI_DRIVER', 'openai'),         'drivers' => [/* … */]],
-    'email'     => ['default' => env('APIHUB_EMAIL_DRIVER', 'mailgun'),     'drivers' => [/* … */]],
-    'messaging' => ['default' => env('APIHUB_MESSAGING_DRIVER', 'twilio'),  'drivers' => [/* … */]],
+    'payments'  => ['default' => env('APIHUB_PAYMENTS_DRIVER', 'stripe'),   'drivers' => [/* ... */]],
+    'ai'        => ['default' => env('APIHUB_AI_DRIVER', 'openai'),         'drivers' => [/* ... */]],
+    'email'     => ['default' => env('APIHUB_EMAIL_DRIVER', 'mailgun'),     'drivers' => [/* ... */]],
+    'messaging' => ['default' => env('APIHUB_MESSAGING_DRIVER', 'twilio'),  'drivers' => [/* ... */]],
 ];
 ```
 
@@ -190,8 +190,8 @@ try {
 | `ServerException`          | 5xx         |
 | `ApiHubException` (base)   | anything else / catch-all |
 
-> Webhook verification and the fakes never throw on a bad signature or in tests
-> — they return `false` / record the call.
+> Webhook verification and the fakes never throw on a bad signature or in tests;
+> instead they return `false` or record the call.
 
 ### Testing with fakes
 
@@ -238,7 +238,7 @@ $result->id();         // provider message id
 `EmailMessage` validates that it has a `from`, at least one `to`, and an `html`
 or `text` body before any driver sends it.
 
-**Attachments** — `Attachment::fromPath($path, $filename = null, $contentType = null)`
+**Attachments**: `Attachment::fromPath($path, $filename = null, $contentType = null)`
 or `new Attachment($filename, $rawBytes, $contentType)`.
 
 **Testing**
@@ -258,7 +258,7 @@ Posts to `/v3/{domain}/messages` with HTTP basic auth. Supports attachments
 (multipart).
 
 ```php
-// config/apihub.php → email.drivers.mailgun
+// config/apihub.php at email.drivers.mailgun
 'mailgun' => [
     'api_key'  => env('MAILGUN_API_KEY'),
     'domain'   => env('MAILGUN_DOMAIN'),
@@ -302,7 +302,7 @@ Email::driver('ses')->send($message);
 ```
 
 > **Note:** the SES driver currently sends "Simple" content. Attachments require
-> a raw MIME body and are not yet supported — passing one throws an
+> a raw MIME body and are not yet supported; passing one throws an
 > `InvalidArgumentException`.
 
 ### Resend
@@ -331,7 +331,7 @@ $request = ChatRequest::make()
     ->model('gpt-4o-mini')                       // optional; falls back to config/driver default
     ->system('You are concise.')
     ->user('Summarise Laravel in one sentence.')
-    ->assistant('Sure — ')                       // optional prior turn
+    ->assistant('Sure, ')                        // optional prior turn
     ->temperature(0.7)
     ->maxTokens(256)
     ->option('top_p', 0.9);                      // provider-specific passthrough
@@ -346,7 +346,7 @@ $response->usage->completionTokens;
 $response->usage->totalTokens;
 ```
 
-One `ChatRequest` works across every provider — the drivers translate it to each
+One `ChatRequest` works across every provider; the drivers translate it to each
 API's shape, so switching providers is just `->driver('anthropic')`.
 
 **Testing**
@@ -413,7 +413,7 @@ Ai::driver('gemini')->chat($request->model('gemini-1.5-flash'));
 
 ### DeepSeek
 
-OpenAI-compatible Chat Completions API — same request/response shape, different
+OpenAI-compatible Chat Completions API with the same request/response shape, just a different
 endpoint and default model (`deepseek-chat`).
 
 ```php
@@ -428,7 +428,7 @@ Ai::driver('deepseek')->chat($request);
 ```
 
 > Default model names are sensible **fallbacks only** and overridable per driver
-> via the `model` config key — pass `->model(...)` explicitly in production.
+> via the `model` config key; pass `->model(...)` explicitly in production.
 
 ---
 
@@ -547,8 +547,8 @@ Sms::driver('whatsapp')->send(TextMessage::make()->to('15551234567')->text('Hi')
 
 Two modes, chosen by what you configure:
 
-- a **bot token** → `chat.postMessage` (`to` is the channel; id is the `ts`),
-- a **webhook URL** → a simple post (no id returned).
+- a **bot token** uses `chat.postMessage` (`to` is the channel; id is the `ts`),
+- a **webhook URL** does a simple post (no id returned).
 
 ```php
 'slack' => [
@@ -558,10 +558,10 @@ Two modes, chosen by what you configure:
 ```
 
 ```php
-// Bot token mode — post to a channel:
+// Bot token mode, posting to a channel:
 Sms::driver('slack')->send(TextMessage::make()->to('#general')->text('Deploy finished'));
 
-// Webhook mode — no channel needed:
+// Webhook mode, no channel needed:
 Sms::driver('slack')->send(TextMessage::make()->text('Deploy finished'));
 ```
 
@@ -569,8 +569,8 @@ Sms::driver('slack')->send(TextMessage::make()->text('Deploy finished'));
 
 Two modes:
 
-- a **bot token + channel id** (`to`) → the channel messages endpoint (returns id),
-- a **webhook URL** → an execute-webhook post (204, no body).
+- a **bot token + channel id** (`to`) uses the channel messages endpoint (returns id),
+- a **webhook URL** does an execute-webhook post (204, no body).
 
 ```php
 'discord' => [
@@ -581,9 +581,9 @@ Two modes:
 
 ```php
 // Webhook mode:
-Sms::driver('discord')->send(TextMessage::make()->text('Build passed ✅'));
+Sms::driver('discord')->send(TextMessage::make()->text('Build passed'));
 
-// Bot mode — to a channel id:
+// Bot mode, to a channel id:
 Sms::driver('discord')->send(TextMessage::make()->to('123456789012345678')->text('Hi'));
 ```
 
@@ -618,13 +618,13 @@ $refund = Payments::refund(
 );
 ```
 
-> **`charge()` semantics differ by gateway** — it maps to each one's primary
+> **`charge()` semantics differ by gateway**: it maps to each one's primary
 > server-side call: Stripe creates+confirms a PaymentIntent; Razorpay and PayPal
 > create an order (completed by the buyer); Square creates a payment;
 > Authorize.Net runs an auth-capture. The `id`, `status`, and `->raw()` let you
 > continue each gateway's own flow.
 
-**Money** — amounts are always in **minor units** (cents, paise). The `Money`
+**Money**: amounts are always in **minor units** (cents, paise). The `Money`
 DTO formats decimals correctly, including zero-decimal currencies like JPY.
 
 **Testing**
@@ -674,7 +674,7 @@ captured against this order). `refund()` acts on a payment id.
 $order = Payments::driver('razorpay')->charge(
     ChargeRequest::make()->amount(50000, 'INR')->reference('rcpt-1')
 );
-// $order->id() → "order_..." — pass it to Razorpay Checkout on the client.
+// $order->id() returns "order_...", pass it to Razorpay Checkout on the client.
 ```
 
 ### PayPal
@@ -772,10 +772,10 @@ public function handle(Request $request)
 
 | Gateway        | Verification |
 |----------------|--------------|
-| Stripe         | HMAC-SHA256 over `{timestamp}.{body}` (`Stripe-Signature: t=…,v1=…`) |
+| Stripe         | HMAC-SHA256 over `{timestamp}.{body}` (`Stripe-Signature: t=...,v1=...`) |
 | Razorpay       | HMAC-SHA256 of the body (`X-Razorpay-Signature`) |
 | Square         | base64 HMAC-SHA256 over `notification_url + body` (`x-square-hmacsha256-signature`) |
-| Authorize.Net  | HMAC-SHA512 hex over the body (`X-ANET-Signature: sha512=…`) |
+| Authorize.Net  | HMAC-SHA512 hex over the body (`X-ANET-Signature: sha512=...`) |
 | PayPal         | Calls PayPal's verify-webhook-signature API (needs `webhook_id`) |
 
 ---
@@ -783,7 +783,7 @@ public function handle(Request $request)
 ## Environment variables reference
 
 ```dotenv
-# ── Global ──────────────────────────────────────────────
+# Global
 APIHUB_HTTP_TIMEOUT=10
 APIHUB_HTTP_RETRIES=2
 APIHUB_HTTP_RETRY_DELAY=250
@@ -791,7 +791,7 @@ APIHUB_LOGGING=false
 APIHUB_QUEUE_CONNECTION=
 APIHUB_QUEUE_NAME=default
 
-# ── Email ───────────────────────────────────────────────
+# Email
 APIHUB_EMAIL_DRIVER=mailgun
 MAILGUN_API_KEY=
 MAILGUN_DOMAIN=
@@ -802,7 +802,7 @@ AWS_SECRET_ACCESS_KEY=
 AWS_DEFAULT_REGION=us-east-1
 RESEND_API_KEY=
 
-# ── AI ──────────────────────────────────────────────────
+# AI
 APIHUB_AI_DRIVER=openai
 OPENAI_API_KEY=
 OPENAI_ORGANIZATION=
@@ -810,7 +810,7 @@ ANTHROPIC_API_KEY=
 GEMINI_API_KEY=
 DEEPSEEK_API_KEY=
 
-# ── SMS & Messaging ─────────────────────────────────────
+# SMS & Messaging
 APIHUB_MESSAGING_DRIVER=twilio
 TWILIO_SID=
 TWILIO_AUTH_TOKEN=
@@ -828,7 +828,7 @@ SLACK_WEBHOOK_URL=
 DISCORD_BOT_TOKEN=
 DISCORD_WEBHOOK_URL=
 
-# ── Payments ────────────────────────────────────────────
+# Payments
 APIHUB_PAYMENTS_DRIVER=stripe
 STRIPE_SECRET=
 STRIPE_WEBHOOK_SECRET=
@@ -861,21 +861,21 @@ composer stan    # PHPStan / Larastan (level 5)
 ```
 
 The package runtime supports **PHP 8.0+** and **Laravel 8+**. The modern test
-tooling (Pest 2/3) needs PHP 8.1+, so CI runs the full suite across PHP 8.1–8.4
-× Laravel 10–12 and additionally lints every source file under **PHP 8.0** to
+tooling (Pest 2/3) needs PHP 8.1+, so CI runs the full suite across PHP 8.1 to 8.4
+and Laravel 10 to 12, and additionally lints every source file under **PHP 8.0** to
 guarantee it stays parse-compatible with the lowest supported version.
 
 ---
 
 ## Roadmap
 
-- [x] **Core engine** — HTTP connector, normalised responses, exception
+- [x] **Core engine:** HTTP connector, normalised responses, exception
       hierarchy, redaction, webhook verification, managers & facades.
-- [x] **Email** — Mailgun, SendGrid, SES, Resend (+ AWS SigV4 signer).
-- [x] **AI** — OpenAI, Anthropic, Gemini, DeepSeek.
-- [x] **SMS & Messaging** — Twilio, Vonage, MSG91, Telegram, WhatsApp, Slack, Discord.
-- [x] **Payments** — Stripe, Razorpay, PayPal, Square, Authorize.Net (+ webhook verification).
-- [ ] Future categories — Cloud & Storage, Social, Maps, Auth, Monitoring — build
+- [x] **Email:** Mailgun, SendGrid, SES, Resend (+ AWS SigV4 signer).
+- [x] **AI:** OpenAI, Anthropic, Gemini, DeepSeek.
+- [x] **SMS & Messaging:** Twilio, Vonage, MSG91, Telegram, WhatsApp, Slack, Discord.
+- [x] **Payments:** Stripe, Razorpay, PayPal, Square, Authorize.Net (+ webhook verification).
+- [ ] Future categories (Cloud & Storage, Social, Maps, Auth, Monitoring) build
       on the same core without changes to it.
 
 ---

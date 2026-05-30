@@ -1,6 +1,6 @@
 {
     "name": "premmohantyagi/apihub-laravel",
-    "description": "ApiHub for Laravel: one unified, driver-based interface over global third-party APIs — payments, AI, email, SMS & messaging, and more.",
+    "description": "ApiHub for Laravel: one unified, driver-based interface over global third-party APIs covering payments, AI, email, SMS & messaging, and more.",
     "keywords": ["laravel", "api", "sdk", "integration", "payments", "ai", "openai", "stripe", "twilio", "email", "sms"],
     "homepage": "https://github.com/premmohantyagi/apihub-laravel",
     "license": "MIT",
