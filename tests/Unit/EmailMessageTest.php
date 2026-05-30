@@ -23,7 +23,9 @@ it('passes validation when complete', function () {
         ->text('Hi');
 
     $message->validate();
-})->throwsNoExceptions();
+
+    expect($message->to)->toHaveCount(1);
+});
 
 it('rejects a message with no from address', function () {
     EmailMessage::make()->to('b@example.com')->text('Hi')->validate();

@@ -16,8 +16,11 @@ it('builds a message fluently', function () {
 });
 
 it('passes validation with text', function () {
-    TextMessage::make()->to('+1')->text('Hi')->validate();
-})->throwsNoExceptions();
+    $message = TextMessage::make()->to('+1')->text('Hi');
+    $message->validate();
+
+    expect($message->text)->toBe('Hi');
+});
 
 it('rejects a message with no text', function () {
     TextMessage::make()->to('+1')->validate();

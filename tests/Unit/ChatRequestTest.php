@@ -24,8 +24,11 @@ it('builds a chat request fluently', function () {
 });
 
 it('passes validation with at least one message', function () {
-    ChatRequest::make()->user('Hi')->validate();
-})->throwsNoExceptions();
+    $request = ChatRequest::make()->user('Hi');
+    $request->validate();
+
+    expect($request->messages)->toHaveCount(1);
+});
 
 it('rejects a request with no messages', function () {
     ChatRequest::make()->validate();
